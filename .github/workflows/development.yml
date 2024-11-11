@@ -6,7 +6,9 @@ on:
 
 jobs:
   deploy:
+    if: github.ref == 'refs/heads/dev'  # Ensures this job only runs on `dev`
     runs-on: ubuntu-latest
+
 
     steps:
       - name: Checkout code
