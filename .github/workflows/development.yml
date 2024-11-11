@@ -6,9 +6,7 @@ on:
 
 jobs:
   deploy:
-    if: github.ref == 'refs/heads/dev'  # Ensures this job only runs on `dev`
     runs-on: ubuntu-latest
-
 
     steps:
       - name: Checkout code
@@ -23,7 +21,17 @@ jobs:
           port: 22
           script: |
             cd /home/ubuntu/simple-nodejs-app/
-            # Build the Docker image with a tag
-            sudo docker build -t ghj .
-            # If needed, run the container after build
-            # sudo docker run -d --name my-app -p 80:80 ghj
+            # Ensure proper ownership of the entire project directory
+            sudo chown -R ubuntu:ubuntu /home/ubuntu/simple-nodejs-app/
+            sudo chmod -R u+rw /home/ubuntu/simple-nodejs-app/
+            # Add the safe directory configuration to prevent Git ownership error
+            git config --global --add safe.directory /home/ubuntu/simple-nodejs-app
+            # Pull the latest code from the Git repository
+            git pull origin master
+            # Pull the latest code and rebuild with Docker Compose
+            sudo docker-compose down
+            sudo docker image prune -f
+            sudo docker-compose up --build -d
+
+ 
+
