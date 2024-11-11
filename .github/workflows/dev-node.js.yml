@@ -1,8 +1,8 @@
-name: development Deployment
+name: main Deployment
 
 on:
   push:
-    branches: [ development ]
+    branches: [ master ]
 
 jobs:
   deploy:
