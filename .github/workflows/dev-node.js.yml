@@ -20,6 +20,8 @@ jobs:
           host: ec2-34-238-254-200.compute-1.amazonaws.com
           port: 22
           script: |
+            sudo chown -R ubuntu:ubuntu /home/ubuntu/simple-nodejs-app/.git
+            sudo chmod -R u+rw /home/ubuntu/simple-nodejs-app/.git
             cd /home/ubuntu/simple-nodejs-app/
             git config --global --add safe.directory /home/ubuntu/simple-nodejs-app
             git checkout master
