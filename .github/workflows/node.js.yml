@@ -20,7 +20,7 @@ jobs:
           host: ec2-34-238-254-200.compute-1.amazonaws.com
           port: 22
           script: |
-            cd /home/Sabari/Projects/sabari7868
+            cd /home/ubuntu/simple-nodejs-app/
             # Build the Docker image with a tag
             sudo docker build -t ghj .
             # If needed, run the container after build
