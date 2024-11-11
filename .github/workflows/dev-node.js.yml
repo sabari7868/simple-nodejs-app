@@ -20,10 +20,15 @@ jobs:
           host: ec2-34-238-254-200.compute-1.amazonaws.com
           port: 22
           script: |
-            sudo chown -R ubuntu:ubuntu /home/ubuntu/simple-nodejs-app/.git
-            sudo chmod -R u+rw /home/ubuntu/simple-nodejs-app/.git
             cd /home/ubuntu/simple-nodejs-app/
+            # Ensure proper ownership of the entire project directory
+            sudo chown -R ubuntu:ubuntu /home/ubuntu/simple-nodejs-app/
+            sudo chmod -R u+rw /home/ubuntu/simple-nodejs-app/
+            # Add the safe directory configuration to prevent Git ownership error
             git config --global --add safe.directory /home/ubuntu/simple-nodejs-app
-            git checkout master
-            git fetch origin master
-            git reset --hard origin/master
+            # Pull the latest code from the Git repository
+            git pull origin master
+            # Pull the latest code and rebuild with Docker Compose
+            sudo docker-compose down
+            sudo docker-compose up --build -d
+
