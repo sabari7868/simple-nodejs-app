@@ -1,0 +1,36 @@
+name: dev Deployment
+
+on:
+  push:
+    branches: [ development ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up SSH
+        uses: appleboy/ssh-action@master
+        with:
+          username: ubuntu
+          key: ${{ secrets.SSH_KEY }}
+          host: ec2-34-238-254-200.compute-1.amazonaws.com
+          port: 22
+          script: |
+            cd /home/ubuntu/simple-nodejs-app/
+
+            # Stop and remove any existing container
+            sudo docker stop my-app || true
+            sudo docker rm my-app || true
+
+            # Remove the old image if it exists
+            sudo docker rmi ghj || true
+
+            # Build the Docker image (replaces the old one)
+            sudo docker build -t ghj .
+
+            # Run the new container with the new image
+            sudo docker run -d --name my-app -p 80:80 ghj
