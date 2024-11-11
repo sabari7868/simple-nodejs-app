@@ -21,7 +21,7 @@ jobs:
           port: 22
           script: |
             cd /home/ubuntu/simple-nodejs-app/
-             
+            git config --global --add safe.directory /home/ubuntu/simple-nodejs-app
             git checkout master
             git fetch origin master
             git reset --hard origin/master
