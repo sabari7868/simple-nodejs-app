@@ -21,6 +21,7 @@ jobs:
           port: 22
           script: |
             cd /home/ubuntu/simple-nodejs-app/
+            git pull origin master
             # Pull the latest code and rebuild with Docker Compose
             sudo docker-compose down
             sudo docker-compose up --build -d
