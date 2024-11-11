@@ -21,7 +21,6 @@ jobs:
           port: 22
           script: |
             cd /home/ubuntu/simple-nodejs-app/
-            # Build the Docker image with a tag
-            sudo docker build -t ghj .
-            # If needed, run the container after build
-            # sudo docker run -d --name my-app -p 80:80 ghj
+            # Pull the latest code and rebuild with Docker Compose
+            sudo docker-compose down
+            sudo docker-compose up --build -d
