@@ -17,7 +17,7 @@ jobs:
         with:
           username: ubuntu
           key: ${{ secrets.SSH_KEY }}
-          host: ec2-34-238-254-200.compute-1.amazonaws.com
+          host: ec2-44-204-5-44.compute-1.amazonaws.com
           port: 22
           script: |
             cd /home/ubuntu/simple-nodejs-app/
