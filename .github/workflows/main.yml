@@ -1,0 +1,34 @@
+name: main Deployment
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up SSH
+        uses: appleboy/ssh-action@master
+        with:
+          username: ubuntu
+          key: ${{ secrets.SSH_KEY }}
+          host: ec2-34-238-254-200.compute-1.amazonaws.com
+          port: 22
+          script: |
+            cd /home/ubuntu/simple-nodejs-app/
+            # Ensure proper ownership of the entire project directory
+            sudo chown -R ubuntu:ubuntu /home/ubuntu/simple-nodejs-app/
+            sudo chmod -R u+rw /home/ubuntu/simple-nodejs-app/
+            # Add the safe directory configuration to prevent Git ownership error
+            git config --global --add safe.directory /home/ubuntu/simple-nodejs-app
+            # Pull the latest code from the Git repository
+            git pull origin master
+            # Pull the latest code and rebuild with Docker Compose
+            sudo docker-compose down
+            sudo docker image prune -f
+            sudo docker-compose up --build -d
